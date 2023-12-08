@@ -57,10 +57,34 @@ function createDivsForColors(colorArray) {
   }
 }
 
+let click1, click2, clicks = 0;
+
 // TODO: Implement this function!
 function handleCardClick(event) {
+  event.preventDefault();
   // you can use event.target to see which element was clicked
-  console.log("you just clicked", event.target);
+  if(clicks > 1) return;
+  event.target.style.backgroundColor = event.target.classList;
+
+  if(clicks == 0) {
+    clicks++;
+    click1 = event.target;
+  } else if (clicks == 1) {
+    clicks++;
+    click2 = event.target;
+    if(click1.style.backgroundColor == click2.style.backgroundColor) {
+      console.log("Match");
+      clicks = 0;
+    } else {
+      console.log("Not a Match");
+      setTimeout(function() {
+        click1.style = null;
+        click2.style = null;
+        clicks = 0;
+      }, 1000);
+    }
+    console.log(clicks);
+  }
 }
 
 // when the DOM loads
