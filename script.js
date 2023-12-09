@@ -10,7 +10,11 @@ const COLORS = [
   "blue",
   "green",
   "orange",
-  "purple"
+  "purple",
+  "pink",
+  "pink",
+  "yellow",
+  "yellow"
 ];
 
 // here is a helper function to shuffle an array
@@ -60,7 +64,12 @@ function createDivsForColors(colorArray) {
 let click1, click2, clicks = 0;
 let matches = 0;
 let score = 0;
-let highscore = localStorage.getItem("highScore");
+let highscore = localStorage.getItem("highScore") ? Number(localStorage.getItem("highScore")) : 20;
+
+const menuSection = document.getElementById("menu");
+let highScoreDisplay = document.createElement("h3");
+highScoreDisplay.innerText = 'HIGH SCORE: ' + highscore;
+menuSection.append(highScoreDisplay);
 
 // TODO: Implement this function!
 function handleCardClick(event) {
@@ -85,10 +94,10 @@ function handleCardClick(event) {
         console.log("WIN");
         if(score < highscore) {
           highscore = score;
-          localStorage.setItem("highScore", highscore)
+          localStorage.setItem("highScore", highscore);
+          highScoreDisplay.innerText = 'HIGH SCORE: ' + highscore;
         }
         matches = 0;
-        score = 0;
         let restart = document.createElement("button");
         restart.innerText = "RESTART";
         gameContainer.append(restart);
@@ -115,6 +124,7 @@ let scoreDisplay;
 
 gameContainer.addEventListener("click", function(e) {
   if(e.target.tagName == "BUTTON") {
+    score = 0;
     e.target.remove();
     createDivsForColors(shuffledColors);
     scoreDisplay = document.createElement("h2");
