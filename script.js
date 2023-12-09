@@ -84,12 +84,12 @@ function handleCardClick(event) {
   } else if (clicks == 1) {
     clicks++;
     click2 = event.target;
+    // check if cards match
     if(click1.style.backgroundColor == click2.style.backgroundColor) {
-      console.log("Match");
       clicks = 0;
       matches++;
       score++;
-      console.log(matches);
+      // win event
       if(matches >= Math.floor(gameContainer.childElementCount / 2)) {
         console.log("WIN");
         if(score < highscore) {
@@ -97,6 +97,7 @@ function handleCardClick(event) {
           localStorage.setItem("highScore", highscore);
           highScoreDisplay.innerText = 'HIGH SCORE: ' + highscore;
         }
+        // restart game
         matches = 0;
         let restart = document.createElement("button");
         restart.innerText = "RESTART";
@@ -107,6 +108,7 @@ function handleCardClick(event) {
       }
       scoreDisplay.innerText = "SCORE: " + score;
     } else {
+      // cards not matching
       console.log("Not a Match");
       setTimeout(function() {
         click1.style = null;
