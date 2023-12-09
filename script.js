@@ -58,12 +58,15 @@ function createDivsForColors(colorArray) {
 }
 
 let click1, click2, clicks = 0;
+let matches = 0;
+let score = 0;
+let highscore = localStorage.getItem("highScore");
 
 // TODO: Implement this function!
 function handleCardClick(event) {
   event.preventDefault();
   // you can use event.target to see which element was clicked
-  if(clicks > 1) return;
+  if(clicks > 1 || event.target.style.backgroundColor) return;
   event.target.style.backgroundColor = event.target.classList;
 
   if(clicks == 0) {
@@ -75,17 +78,47 @@ function handleCardClick(event) {
     if(click1.style.backgroundColor == click2.style.backgroundColor) {
       console.log("Match");
       clicks = 0;
+      matches++;
+      score++;
+      console.log(matches);
+      if(matches >= Math.floor(gameContainer.childElementCount / 2)) {
+        console.log("WIN");
+        if(score < highscore) {
+          highscore = score;
+          localStorage.setItem("highScore", highscore)
+        }
+        matches = 0;
+        score = 0;
+        let restart = document.createElement("button");
+        restart.innerText = "RESTART";
+        gameContainer.append(restart);
+        restart.addEventListener("click", function() {
+          gameContainer.innerHTML = '';
+        });
+      }
+      scoreDisplay.innerText = "SCORE: " + score;
     } else {
       console.log("Not a Match");
       setTimeout(function() {
         click1.style = null;
         click2.style = null;
         clicks = 0;
+        score++;
+        scoreDisplay.innerText = "SCORE: " + score;
       }, 1000);
     }
-    console.log(clicks);
   }
 }
 
 // when the DOM loads
-createDivsForColors(shuffledColors);
+let scoreDisplay;
+
+gameContainer.addEventListener("click", function(e) {
+  if(e.target.tagName == "BUTTON") {
+    e.target.remove();
+    createDivsForColors(shuffledColors);
+    scoreDisplay = document.createElement("h2");
+    scoreDisplay.innerText = "SCORE: " + score;
+    gameContainer.prepend(scoreDisplay);
+  }
+})
